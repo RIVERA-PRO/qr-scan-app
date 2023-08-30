@@ -11,6 +11,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+
 import Modal from 'react-native-modal';
 
 export default function Header() {
@@ -96,11 +97,12 @@ export default function Header() {
                             <Text style={styles.buttonText}>Inicio</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={goToHistorial} style={styles.btnNav}>
-                            <MaterialCommunityIcons name="chat" size={20} color='#1FC2D7' />
+                            <MaterialCommunityIcons name="web-plus" size={24} color='#1FC2D7' />
                             <Text style={styles.buttonText}>Historial</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={goToImageScan} style={styles.btnNav}>
-                            <MaterialCommunityIcons name="chat" size={20} color='#1FC2D7' />
+
+                            <Ionicons name="qr-code" size={20} color='#1FC2D7' />
                             <Text style={styles.buttonText}>Crear QR</Text>
                         </TouchableOpacity>
 
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
     },
     modalContent: {
         backgroundColor: '#fff',
-        borderRadius: 8,
+
         overflow: 'hidden',
         width: '80%',
         height: '100%',
@@ -234,7 +236,7 @@ const styles = StyleSheet.create({
     },
     img: {
         width: '100%',
-        height: 140,
+        height: 160,
         objectFit: 'cover'
     },
     navBtns: {

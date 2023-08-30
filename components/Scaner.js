@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Linking, Button, TouchableOpacity } from 'react-native';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { BarCodeScanner, BarCodeScannerResult } from 'expo-barcode-scanner';
+
 import { PinchGestureHandler, State } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -77,17 +78,17 @@ export default function Scanner() {
     };
 
     if (hasPermission === null) {
-        return <Text>Requesting camera permission</Text>;
+        return <Text style={styles.textPermisos}>Solicitando permiso de cámara</Text>;
     }
     if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+        return <Text style={styles.textPermisos}>Sin acceso a la cámara</Text>;
     }
 
     return (
         <View style={styles.container}>
             {scanned ? (
                 <View style={styles.dataContainer}>
-                    <Text style={styles.dataText}>Scaneo</Text>
+                    <Text style={styles.dataText}>Exito!</Text>
                     <TouchableOpacity onPress={openLink}>
                         <Text style={styles.linkText}>{scannedData}</Text>
                     </TouchableOpacity>
@@ -111,14 +112,21 @@ export default function Scanner() {
 
                 </View>
             ) : (
+
                 <PinchGestureHandler onGestureEvent={onZoomEvent}>
+
                     <View style={styles.cameraContainer}>
                         <BarCodeScanner
                             onBarCodeScanned={handleBarCodeScanned}
                             style={{ ...styles.cameraPreview, transform: [{ scale }] }}
                         />
                     </View>
+
+
                 </PinchGestureHandler>
+
+
+
             )}
 
         </View>
@@ -139,7 +147,8 @@ const styles = StyleSheet.create({
     cameraContainer: {
         width: '100%',
         height: '100%',
-        marginTop: '-14%'
+        marginTop: '-14%',
+
     },
     cameraPreview: {
         ...StyleSheet.absoluteFillObject,
@@ -150,18 +159,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         height: '100%',
-        paddingTop: 50
+
+        padding: 20
     },
     dataText: {
         color: 'rgba(00, 00, 00, 0.6)',
-        fontSize: 16,
+        fontSize: 19,
         fontWeight: 'bold'
     },
     linkText: {
         color: 'blue',
         fontSize: 16,
         marginTop: 5,
-        color: '#1FC2D7'
+        color: '#1FC2D7',
+        paddingTop: 20
     },
     scannedItemText: {
         color: 'white',
@@ -186,7 +197,12 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     containScaners: {
-        padding: 20,
+
         marginTop: 100
+    },
+    textPermisos: {
+        textAlign: 'center',
+        fontSize: 16
     }
+
 });

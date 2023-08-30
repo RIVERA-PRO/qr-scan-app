@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 
     },
     itemText: {
-        fontSize: 13,
+        fontSize: 15,
         marginBottom: 5,
         color: '#1FC2D7',
     },

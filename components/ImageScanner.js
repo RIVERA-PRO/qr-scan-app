@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, Button, Image, TextInput, StyleSheet, ScrollView, TouchableOpacity, Clipboard } from 'react-native';
+import { View, Text, Button, Image, TextInput, StyleSheet, ScrollView, TouchableOpacity, Clipboard, Platform } from 'react-native';
+
 import axios from 'axios';
-import { Entypo } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+
+
+
 export default function QRGenerator() {
     const [qrValue, setQRValue] = useState('');
     const [bgColor, setBgColor] = useState('FFFFFF'); // Color de fondo por defecto en blanco
     const [fgColor, setFgColor] = useState('000000'); // Color del módulo por defecto en negro
     const [qrImage, setQRImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const generateQRCode = async () => {
         if (qrValue.trim() === '') {
@@ -17,6 +20,7 @@ export default function QRGenerator() {
         }
 
         try {
+            setIsLoading(true); // Mostrar indicador de carga
             const response = await axios.get(
                 `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrValue}&bgcolor=${bgColor}&color=${fgColor}`
             );
@@ -24,23 +28,11 @@ export default function QRGenerator() {
             setErrorMessage(''); // Limpiar el mensaje de error si la generación es exitosa
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false); // Ocultar indicador de carga sin importar el resultado
         }
     };
 
-    const shareQRImage = async () => {
-        if (!qrImage) {
-            return;
-        }
-
-        try {
-            const result = await Share.share({
-                url: qrImage,
-            });
-            console.log(result.action);
-        } catch (error) {
-            console.error(error);
-        }
-    };
     const colorList = [
         '000000', 'FF0000', '00FF00', '0000FF', 'FFFF00', 'FF00FF', '00FFFF', 'FFFFFF',
         'C71585', '1E90FF', 'FF8C00', '32CD32', '8A2BE2', 'FF1493', '7B68EE', 'FF4500',
@@ -68,14 +60,7 @@ export default function QRGenerator() {
                         source={{ uri: qrImage }}
                         style={[styles.qrImage, styles.shadow]}
                     />
-                    <View style={styles.buttonsContainer}>
-                        <TouchableOpacity title="Descargar QR" onPress={() => {/* Lógica para descargar la imagen */ }} >
-                            <AntDesign name="download" size={24} color="#1FC2D7" />
-                        </TouchableOpacity>
-                        <TouchableOpacity title="Compartir QR" onPress={shareQRImage} >
-                            <Entypo name="share" size={24} color="#1FC2D7" />
-                        </TouchableOpacity>
-                    </View>
+
                 </>
             )}
             <TextInput
@@ -96,9 +81,14 @@ export default function QRGenerator() {
                 onChangeText={text => setFgColor(text)}
                 style={styles.input}
             />
-            <TouchableOpacity onPress={generateQRCode} style={styles.generarBtn}>
-                <Text style={styles.generarText}>Generar QR</Text>
+            <TouchableOpacity
+                onPress={generateQRCode}
+                style={[styles.generarBtn, isLoading && styles.disabledBtn]} // Agregar el estilo de botón deshabilitado cuando isLoading es true
+                disabled={isLoading} // Deshabilitar el botón cuando isLoading es true
+            >
+                <Text style={styles.generarText}>{isLoading ? 'Cargando...' : 'Generar QR'}</Text>
             </TouchableOpacity>
+
             {errorMessage !== '' && <Text style={styles.errorText}>{errorMessage}</Text>}
 
 
@@ -144,12 +134,13 @@ const styles = StyleSheet.create({
     qrImage: {
         width: 200,
         height: 200,
-        borderRadius: 10,
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 50,
+        marginBottom: 20
     },
     shadow: {
         shadowColor: '#000',

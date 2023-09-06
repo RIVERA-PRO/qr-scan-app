@@ -7,7 +7,7 @@ import Historial from '../components/Historial';
 import HeaderBlanco from '../components/HeaderBlanco'
 export default function HistorialScreen() {
     return (
-        <View>
+        <View style={styles.container}>
             <HeaderBlanco />
 
             <Historial />
@@ -17,5 +17,7 @@ export default function HistorialScreen() {
 
 
 const styles = StyleSheet.create({
-
+    container: {
+        backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    },
 })

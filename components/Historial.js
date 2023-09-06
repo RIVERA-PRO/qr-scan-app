@@ -69,6 +69,9 @@ export default function Historial() {
 
                 </View>
             ))}
+            <View style={styles.espacio}>
+
+            </View>
         </ScrollView>
     );
 }
@@ -79,23 +82,30 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
 
 
+
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         marginBottom: 20,
         color: 'rgba(00, 00, 00, 0.6)',
+        textAlign: 'center'
     },
     itemContainer: {
         borderBottomWidth: 0.2,
         borderColor: 'gray',
         paddingVertical: 10,
-
-
         flexDirection: 'column',
-
-
-        gap: 5
+        gap: 5,
+        backgroundColor: '#fff',
+        shadowColor: 'rgba(0, 0, 0, 0.6)',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+        elevation: 15,
+        marginTop: 10,
+        padding: 5,
+        borderRadius: 6
 
     },
     itemText: {
@@ -112,6 +122,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
 
 
+    },
+    espacio: {
+        height: 200
     }
 
 });

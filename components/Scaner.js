@@ -72,7 +72,11 @@ export default function Scanner() {
             Linking.openURL(scannedData);
         }
     };
-
+    const openLink2 = (link) => {
+        if (Linking.canOpenURL(link)) {
+            Linking.openURL(link);
+        }
+    };
     const onZoomEvent = (event) => {
         setScale(event.nativeEvent.scale);
     };
@@ -106,9 +110,17 @@ export default function Scanner() {
                     <ScrollView style={styles.containScaners}>
                         <Text style={styles.dataText}>Historial</Text>
                         {scannedItems.map((item, index) => (
-                            <Text key={index} style={styles.scannedItemText}>{item.data}</Text>
+                            <TouchableOpacity key={index} onPress={() => openLink2(item.data)}>
+                                <Text style={styles.scannedItemText}>{item.data}</Text>
+                            </TouchableOpacity>
                         ))}
+                        <View style={styles.espacio}>
+
+                        </View>
                     </ScrollView>
+
+
+
 
                 </View>
             ) : (
@@ -142,7 +154,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         margin: 0,
-        padding: 0
+        padding: 0,
+        backgroundColor: 'rgba(255, 255, 255, 0.6)',
     },
     cameraContainer: {
         width: '100%',
@@ -154,18 +167,16 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
     },
     dataContainer: {
-
         justifyContent: 'center',
-        alignItems: 'center',
         width: '100%',
         height: '100%',
-
         padding: 20
     },
     dataText: {
         color: 'rgba(00, 00, 00, 0.6)',
         fontSize: 19,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textAlign: 'center'
     },
     linkText: {
         color: 'blue',
@@ -177,8 +188,17 @@ const styles = StyleSheet.create({
     scannedItemText: {
         color: 'white',
         fontSize: 14,
-        marginTop: 10,
-        color: '#1FC2D7'
+        color: '#1FC2D7',
+        backgroundColor: '#ffff',
+        padding: 5,
+        shadowColor: 'rgba(0, 0, 0, 0.6)',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+        elevation: 4,
+        marginHorizontal: 5,
+        marginVertical: 5,
+        borderRadius: 6
     },
     deFlex: {
         flexDirection: 'row',
@@ -194,15 +214,21 @@ const styles = StyleSheet.create({
         borderRadius: 40
     },
     textBtn: {
-        color: '#fff'
+        color: '#fff',
+
     },
     containScaners: {
 
-        marginTop: 100
+        marginTop: 80,
+
     },
     textPermisos: {
         textAlign: 'center',
-        fontSize: 16
+        fontSize: 16,
+
+    },
+    espacio: {
+        height: 60
     }
 
 });
